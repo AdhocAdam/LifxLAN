@@ -76,4 +76,4 @@ jobs:
           Write-Output "Publishing to PowerShell Gallery"
           Import-Module "C:\LifxLAN\LifxLAN.psd1"
           Get-Module LifxLAN
-          #Publish-Module -Name "LifxLAN" -NuGetApiKey ${{secrets.LIFXLANPWSHGALLERYKEY}} -LicenseUri "https://github.com/AdhocAdam/lifxlan/blob/main/LICENSE" -WhatIf
+          Publish-Module -Name "LifxLAN" -NuGetApiKey ${{secrets.LIFXLANPWSHGALLERYKEY}} -LicenseUri "https://github.com/AdhocAdam/lifxlan/blob/main/LICENSE"
