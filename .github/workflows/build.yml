@@ -57,23 +57,23 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Copy the required files to a temp directory
         run: |
-          New-Item -Path "C:\LifxLAN" -ItemType Directory
-          Copy-Item LifxLAN.psd1 -Destination "C:\LifxLAN"
-          Copy-Item LifxLAN.psm1 -Destination "C:\LifxLAN"
-          Copy-Item -Path "Device" -Destination "C:\LifxLAN" -recurse
-          Copy-Item -Path "Packet" -Destination "C:\LifxLAN" -recurse
+          New-Item -Path "C:\Users\runneradmin\Documents\PowerShell\Modules\LifxLAN" -ItemType Directory
+          Copy-Item LifxLAN.psd1 -Destination "C:\Users\runneradmin\Documents\PowerShell\Modules\LifxLAN"
+          Copy-Item LifxLAN.psm1 -Destination "C:\Users\runneradmin\Documents\PowerShell\Modules\LifxLAN"
+          Copy-Item -Path "Device" -Destination "C:\Users\runneradmin\Documents\PowerShell\Modules\LifxLAN" -recurse
+          Copy-Item -Path "Packet" -Destination "C:\Users\runneradmin\Documents\PowerShell\Modules\LifxLAN" -recurse
           
       # publish the build artifact up to GitHub
       - name: publish the artifact (folder) back to GitHub
         uses: actions/upload-artifact@master
         with:
           name: LifxLAN
-          path: C:\LifxLAN\
+          path: C:\Users\runneradmin\Documents\PowerShell\Modules\LifxLAN\
           
       # publish to PowerShell Gallery
       - name: publish to PowerShell Gallery
         run: |
           Write-Output "Publishing to PowerShell Gallery"
-          Import-Module "C:\LifxLAN\LifxLAN.psd1"
+          Import-Module "C:\Users\runneradmin\Documents\PowerShell\Modules\LifxLAN\LifxLAN.psd1"
           Get-Module LifxLAN
           Publish-Module -Name "LifxLAN" -NuGetApiKey ${{secrets.LIFXLANPWSHGALLERYKEY}} -LicenseUri "https://github.com/AdhocAdam/lifxlan/blob/main/LICENSE"
