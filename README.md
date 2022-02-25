@@ -12,7 +12,7 @@ This is a module aimed at controlling Lifx devices on your LAN right from PowerS
 ## Getting Started
 Install from the module from the PowerShell Gallery by using the following at a PowerShell prompt
 ```powershell
-Install-Module LifxLAN
+Install-Module -Name LifxLAN -AllowPrerelease
 ```
 
 ## Discovering Lifx devices on your network
