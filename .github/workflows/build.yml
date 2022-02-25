@@ -1,0 +1,79 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Build, Release, and Publish
+
+# Controls when the workflow will run
+on: 	
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'The next version of the module - 0.0.0.0 for prerelease, 0.0.0 for regular'
+        required: true
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: windows-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Runs a set of commands using the runners shell
+      - name: Change the version
+        run: |
+          # get the manifest
+          $newVersionString = "${{github.event.inputs.version}}"
+          $newVersion = [Version]::new($newVersionString)
+          
+          # determine if this is a Release or Pre-Release
+          if ($newVersion.Revision -eq -1)
+          {
+              #regular, change the version and remove the pre-release block from the manifest
+              Write-Output "Performing regular build..."
+              (Get-Content -Path '.\LifxLAN.psd1') -replace '0.0.1', $newVersionString | Set-Content -Path '.\LifxLAN.psd1'
+          }
+          else
+          {
+              #alpha, change the version and update the pre-release block from the manifest
+              Write-Output "Performing pre-release build..."
+              $alphaVersion = "-" + "alpha" + $newVersion.Revision.ToString()
+              $newVersionString = $newVersion.Major.ToString() + "." + $newVersion.Minor.ToString() + "." + $newVersion.Build.ToString()
+              (Get-Content -Path '.\LifxLAN.psd1') -replace '0.0.1', $newVersionString | Set-Content -Path '.\LifxLAN.psd1'
+              
+              #prep the PrivateData section, then set the pre-release version
+              Update-ModuleManifest -Path ".\LifxLAN.psd1"
+              Update-ModuleManifest -Path ".\LifxLAN.psd1" -Prerelease "$alphaVersion"
+          }
+          Write-Output "Updated Manifest---"
+          
+      # Test the module with updated version
+      - name: Test the module
+        run: Test-ModuleManifest '.\LifxLAN.psd1'
+
+      # Runs a set of commands using the runners shell
+      - name: Copy the required files to a temp directory
+        run: |
+          New-Item -Path "C:\LifxLAN" -ItemType Directory
+          Copy-Item LifxLAN.psd1 -Destination "C:\LifxLAN"
+          Copy-Item LifxLAN.psm1 -Destination "C:\LifxLAN"
+          Copy-Item -Path "Device" -Destination "C:\LifxLAN" -recurse
+          Copy-Item -Path "Packet" -Destination "C:\LifxLAN" -recurse
+          
+      # publish the build artifact up to GitHub
+      - name: publish the artifact (folder) back to GitHub
+        uses: actions/upload-artifact@master
+        with:
+          name: LifxLAN
+          path: C:\LifxLAN\
+          
+      # publish to PowerShell Gallery
+      - name: publish to PowerShell Gallery
+        run: |
+          Write-Output "Publishing to PowerShell Gallery"
+          Import-Module "C:\LifxLAN\LifxLAN.psd1"
+          Get-Module LifxLAN
+          #Publish-Module -Name "LifxLAN" -NuGetApiKey ${{secrets.LIFXLANPWSHGALLERYKEY}} -LicenseUri "https://github.com/AdhocAdam/lifxlan/blob/main/LICENSE" -WhatIf
