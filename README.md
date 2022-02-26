@@ -1,10 +1,7 @@
-<h1 align="center">
-  <br>
-  <img width="400" src="lifxlan.png">
-  <br>
-    LifxLAN
-  <br>
-</h1>
+<p align="center">
+  <img width="400" src="https://raw.githubusercontent.com/AdhocAdam/LifxLAN/main/lifxlan.png">
+</p>
+<h1 align="center">LifxLAN</h1>
 
 ## Overview
 This is a module aimed at controlling Lifx devices on your LAN right from PowerShell. Cmdlets are not comprehensive in their control but pull requests are welcome! 
