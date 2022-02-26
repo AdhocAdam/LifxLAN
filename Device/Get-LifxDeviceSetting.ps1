@@ -25,8 +25,8 @@ function Get-LifxDeviceSetting
         $receivingUdpClient.Client.SetSocketOption([System.Net.Sockets.SocketOptionLevel]::Socket, [System.Net.Sockets.SocketOptionName]::ReuseAddress, $true)
     
         #Device packets
-        [Byte[]]$getVersionPacket = New-LifxPacketV2 -Type "GetVersion" | Convert-LifxPacketToBuffer
-        [Byte[]]$getFirmwarePacket = New-LifxPacketV2 -Type "GetHostFirmware" | Convert-LifxPacketToBuffer
+        [Byte[]]$getVersionPacket = New-LifxPacket -Type "GetVersion" | Convert-LifxPacketToBuffer
+        [Byte[]]$getFirmwarePacket = New-LifxPacket -Type "GetHostFirmware" | Convert-LifxPacketToBuffer
 
         #send the GetVersion packet
         $send = $receivingUdpClient.SendAsync($getVersionPacket, $getVersionPacket.Length, $_.IPAddress.Address, $_.IPAddress.Port)
