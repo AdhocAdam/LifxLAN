@@ -1,7 +1,7 @@
 function Get-LifxProduct
 {
     param(
-        #Lifx Product by Id (use Get-LifxDevice)
+        #Lifx Product by Id (pass results from Get-LifxDevice | Initialize-LifxDevice)
         #https://lan.developer.lifx.com/docs/product-registry
         [parameter(
                 Position          = 0,
