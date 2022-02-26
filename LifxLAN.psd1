@@ -72,7 +72,8 @@ NestedModules = @(
         '.\Device\Set-LifxDevicePower.ps1',
         '.\Device\Set-LifxDeviceColor.ps1',
         '.\Packet\Convert-LifxPacketToBuffer.ps1',
-        '.\Packet\New-LifxPacket.ps1'
+        '.\Packet\New-LifxPacket.ps1',
+        '.\Product\Get-LifxProduct.ps1'
         )
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
