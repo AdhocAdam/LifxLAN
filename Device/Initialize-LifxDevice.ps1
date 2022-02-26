@@ -14,7 +14,7 @@
 function Initialize-LifxDevice
 {
     param(
-        #a discovered Lifx device (use Get-LifxDevice)
+        #a discovered Lifx bulb (use Get-LifxDevice)
         [parameter(
                 Position          = 0,
                 Mandatory         = $true,
@@ -32,33 +32,28 @@ function Initialize-LifxDevice
         $Port = "56700"
         $localIP = [System.Net.IPAddress]::Parse([System.Net.IPAddress]::Any)
         $RemoteIpEndPoint = New-Object System.Net.IPEndpoint($localIP, $Port)
-        $receivingUdpClient = $null
         $receivingUdpClient = New-Object System.Net.Sockets.UDPClient($RemoteIpEndPoint)
         $receivingUdpClient.Client.Blocking = $false
         $receivingUdpClient.DontFragment = $true
         $receivingUdpClient.Client.SetSocketOption([System.Net.Sockets.SocketOptionLevel]::Socket, [System.Net.Sockets.SocketOptionName]::ReuseAddress, $true)
     
         #Device packets
-        [Byte[]]$getColorPacket = New-LIFXPacket -Type "GetColor" | Convert-LifxPacketToBuffer
-        [Byte[]]$getGroupPacket = New-LIFXPacket -Type "GetGroup" | Convert-LifxPacketToBuffer
-    
-        #get the color
-        $send = $receivingUdpClient.SendAsync($getColorPacket, $getColorPacket.Length, $_.IPAddress.Address, $_.IPAddress.Port)
-    
-        #wait a second
-        start-sleep -seconds 1
-    
-        #parse the GetColor result
-        $result = $receivingUdpClient.Receive([ref]$RemoteIpEndPoint)
-        $itemName = [System.Text.Encoding]::UTF8.GetString($result, 48, 32) #name
-        $powerState = ([System.BitConverter]::ToUInt16($result, 46)) -gt 0 #on/off
-    
-        #set the GetColor values
-        $_ | Add-Member -Name 'Name' -Type NoteProperty -Value $itemName.Trim() -Force
-        $_ | Add-Member -Name 'Power' -Type NoteProperty -Value $powerState -Force
-    
-        #get the Group
+        [Byte[]]$getLabelPacket = New-LifxPacket -Type "GetLabel" | Convert-LifxPacketToBuffer
+        [Byte[]]$getGroupPacket = New-LifxPacket -Type "GetGroup" | Convert-LifxPacketToBuffer
+
+        #send the GetLabel packet
+        $send = $receivingUdpClient.SendAsync($getLabelPacket, $getLabelPacket.Length, $_.IPAddress.Address, $_.IPAddress.Port)
+
+        #get the Label
+        start-sleep -Seconds 1
+        $labelResult = $receivingUdpClient.Receive([ref]$RemoteIpEndPoint)
+        $itemLabelName = [System.Text.Encoding]::UTF8.GetString($labelResult, 36, 32)
+        $_ | Add-Member -Name 'Name' -Type NoteProperty -Value $itemLabelName -Force
+
+        #send the GetGroup packet
         $send = $receivingUdpClient.SendAsync($getGroupPacket, $getGroupPacket.Length, $_.IPAddress.Address, $_.IPAddress.Port)
+
+        #get the Group
         start-sleep -Seconds 1
         $result = $receivingUdpClient.Receive([ref]$RemoteIpEndPoint)
         $itemGroupName = [System.Text.Encoding]::UTF8.GetString($result, 52, 14)
