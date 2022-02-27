@@ -1,3 +1,14 @@
+<#
+    .SYNOPSIS
+        Get the power state of a Lifx device
+    .DESCRIPTION
+        Get the current power state of a Lifx device.
+    .EXAMPLE
+        Get-LifxDevice | Initialize-LifxDevice | Get-LifxDevicePower
+     .EXAMPLE
+        Get-LifxDevice | Get-LifxDevicePower  
+#>
+
 function Get-LifxDevicePower
 {
     param(
