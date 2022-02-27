@@ -62,6 +62,7 @@ jobs:
           Copy-Item LifxLAN.psm1 -Destination "C:\Users\runneradmin\Documents\PowerShell\Modules\LifxLAN"
           Copy-Item -Path "Device" -Destination "C:\Users\runneradmin\Documents\PowerShell\Modules\LifxLAN" -recurse
           Copy-Item -Path "Packet" -Destination "C:\Users\runneradmin\Documents\PowerShell\Modules\LifxLAN" -recurse
+          Copy-Item -Path "Product" -Destination "C:\Users\runneradmin\Documents\PowerShell\Modules\LifxLAN" -recurse
           
       # publish the build artifact up to GitHub
       - name: publish the artifact (folder) back to GitHub

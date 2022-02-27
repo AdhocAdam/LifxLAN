@@ -47,7 +47,9 @@ function Get-LifxDevice
                     #Name = ""
                     #Power = ""
                     #Group = ""
-                    State = $result
+                    #State = $result
+                    #Service = [System.BitConverter]::ToUInt16($result, 36)
+                    Port = [System.BitConverter]::ToUInt32($result, 37)
                 }
                 if ($localIPs.IPAddress -notcontains $bulb.ipaddress.address.IPAddressToString)
                 {

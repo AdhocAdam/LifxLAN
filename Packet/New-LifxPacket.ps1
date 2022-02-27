@@ -12,15 +12,19 @@
 function New-LifxPacket
 {
     param (
-        [ValidateSet("Discovery", "GetColor", "GetGroup")]
+        [ValidateSet("Discovery", "GetColor", "GetLabel", "GetGroup", "GetVersion", "GetHostFirmware")]
         [string] $Type
     )
 
     switch ($Type)
     {
+        #https://lan.developer.lifx.com/docs/querying-the-device-for-data
         "Discovery" {$packetInt = 2; $size = 36; $ackRequired = $false}
         "GetColor"  {$packetInt = 101; $size = 36; $ackRequired = $false}
+        "GetLabel"  {$packetInt = 23; $size = 36; $ackRequired = $false}
         "GetGroup"  {$packetInt = 51; $size = 36; $ackRequired = $false}
+        "GetVersion"{$packetInt = 32; $size = 36; $ackRequired = $false}
+        "GetHostFirmware"{$packetInt = 14; $size = 36; $ackRequired = $false}
     }
 
     $packet = [PSCustomObject] @{
