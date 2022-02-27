@@ -43,6 +43,12 @@ This updates devices returned with properties for [PSCustomObject] Product detai
 ```
 
 ## Controlling Power
+The current power state of devices can be obtained/refreshed with:
+```powershell
+$devices = Get-LifxDevice | Initialize-LifxDevice
+$devices | Get-LifxDevicePower
+```
+
 Devices can be turned on individually or through the pipeline
 ```powershell
 $devices = Get-LifxDevice | Initialize-LifxDevice
