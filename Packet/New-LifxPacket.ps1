@@ -12,7 +12,7 @@
 function New-LifxPacket
 {
     param (
-        [ValidateSet("Discovery", "GetColor", "GetLabel", "GetGroup", "GetVersion", "GetHostFirmware")]
+        [ValidateSet("Discovery", "GetColor", "GetLabel", "GetGroup", "GetVersion", "GetHostFirmware", "GetPower")]
         [string] $Type
     )
 
@@ -25,6 +25,7 @@ function New-LifxPacket
         "GetGroup"  {$packetInt = 51; $size = 36; $ackRequired = $false}
         "GetVersion"{$packetInt = 32; $size = 36; $ackRequired = $false}
         "GetHostFirmware"{$packetInt = 14; $size = 36; $ackRequired = $false}
+        "GetPower" {$packetInt = 20; $size = 36; $ackRequired = $false}
     }
 
     $packet = [PSCustomObject] @{
