@@ -22,6 +22,26 @@ $devices = Get-LifxDevice | Initialize-LifxDevice
 ```
 This returns a list of Lifx devices on your network by their IP Address, Name, and Group
 
+## Get product details and firmware
+```powershell
+$devices = Get-LifxDevice | Initialize-LifxDevice
+$devices | Get-LifxDeviceSetting
+```
+This updates devices returned with properties for [PSCustomObject] Product details and [Version] Firmware Version. For example:
+ ```powershell
+#Example Product information
+[PSCustomObject]@{
+    [int]Id=91;
+    [string]Name=LIFX Color;
+    [bool]Color=True;
+    [bool]Infrared=False;
+    [bool]Multizone=False;
+    [bool]HEV=False}
+
+#Example Version
+[Version]3.70
+```
+
 ## Controlling Power
 Devices can be turned on individually or through the pipeline
 ```powershell
