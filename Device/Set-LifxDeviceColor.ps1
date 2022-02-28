@@ -106,7 +106,7 @@ function Set-LifxDeviceColor
     $Saturation = $Saturation/100
     $hscolor = [System.Drawing.Color]::FromArgb($red, $green, $blue)
     $hsbrightness = [int]([Math]::Round(0xFFFF * $Brightness))
-    $hshue = [int](([Math]::Round(0x10000 * $hscolor.GetHue()) / 360) / 0x10000)
+    $hshue = [int](([Math]::Round(0x10000 * $hscolor.GetHue()) / 360) % 0x10000)
     $hsSaturation = [int]([Math]::Round(0xFFFF * $Saturation))
 
     #build the packet
