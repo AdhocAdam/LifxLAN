@@ -73,6 +73,7 @@ NestedModules = @(
         '.\Device\Set-LifxDevicePower.ps1',
         '.\Device\Set-LifxDeviceColor.ps1',
         '.\Device\Get-LifxDeviceSetting.ps1',
+        '.\Device\Get-LifxDeviceWifi.ps1',
         '.\Packet\Convert-LifxPacketToBuffer.ps1',
         '.\Packet\New-LifxPacket.ps1',
         '.\Product\Get-LifxProduct.ps1'
