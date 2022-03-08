@@ -42,6 +42,12 @@ This updates devices returned with properties for [PSCustomObject] Product detai
 [Version]3.70
 ```
 
+## Get device Wifi Signal and Strength
+```powershell
+$devices = Get-LifxDevice | Initialize-LifxDevice
+$devices | Get-LifxDeviceWifi
+```
+
 ## Controlling Power
 The current power state of devices can be obtained/refreshed with:
 ```powershell
