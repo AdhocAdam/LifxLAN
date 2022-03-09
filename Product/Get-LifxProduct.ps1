@@ -1,3 +1,12 @@
+<#
+    .SYNOPSIS
+        Returns a device's model and capabilities
+    .DESCRIPTION
+        This cmdlet returns a Lifx Device's model and capabilities by it's Product ID.
+    .EXAMPLE
+        Get-LifxProduct -Id 18
+#>
+
 function Get-LifxProduct
 {
     param(

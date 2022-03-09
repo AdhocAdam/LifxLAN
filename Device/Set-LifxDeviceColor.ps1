@@ -2,7 +2,7 @@
     .SYNOPSIS
         Controls the color of a Lifx device
     .DESCRIPTION
-        This cmdlet allows you to set the brightness, saturation, hue, and kevlin of a Lifx device based on different parameters. It also
+        This cmdlet allows you to set the brightness, saturation, hue, and kelvin of a Lifx device based on different parameters. It also
         supports SecondsToTransition to control how fast the change occurs.
     .EXAMPLE
         $devices = Get-LifxDevice | Initialize-LifxDevice
@@ -18,7 +18,7 @@
         $devices | Where-Object {$_.Group -eq "Living Room"} | Set-LifxDeviceColor -Kelvin 12000 -Brightness 10000
     .EXAMPLE
         $devices = Get-LifxDevice | Initialize-LifxDevice
-        $devices | Where-Object {$_.Group -eq "Living Room"} | Set-LifxDeviceColor -white 'Cloudy Daylight' -Brightness 90
+        $devices | Where-Object {$_.Group -eq "Living Room"} | Set-LifxDeviceColor -White 'Cloudy Daylight' -Brightness 90
 #>
 
 function Set-LifxDeviceColor
@@ -69,7 +69,7 @@ function Set-LifxDeviceColor
         [Parameter(ParameterSetName="KelvinByNumber")]
         [decimal]$Kelvin,
         
-        #kelvin valuues by name as defined by Lifx
+        #kelvin values by name as defined by Lifx
         [Parameter(ParameterSetName="KelvinByName")]
         [ValidateSet("Candlelight", "Sunset", "Ultra Warm", "Incandescent", "Warm", "Neutral", "Cool", "Cool Daylight", "Soft Daylight",
             "Daylight", "Noon Daylight", "Bright Daylight", "Cloudy Daylight", "Blue Daylight", "Blue Overcast", "Blue Ice")]
@@ -166,7 +166,7 @@ function Set-LifxDeviceColor
         $receivingUdpClient.DontFragment = $true
         $receivingUdpClient.Client.SetSocketOption([System.Net.Sockets.SocketOptionLevel]::Socket, [System.Net.Sockets.SocketOptionName]::ReuseAddress, $true)
 
-        #get the color
+        #send the SetColor packet to the device
         $send = $receivingUdpClient.SendAsync($changeColorPacket, $changeColorPacket.Length, $_.IPAddress.Address, $_.IPAddress.Port)
     
         #shut the udp client down    

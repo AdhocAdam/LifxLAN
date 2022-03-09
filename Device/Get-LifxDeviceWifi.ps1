@@ -1,3 +1,13 @@
+<#
+    .SYNOPSIS
+        Gets the Wifi Signal and Strength of a Lifx Device
+    .DESCRIPTION
+        This cmdlet accepts output from Get-LifxDevice to obtain the wifi strength [string] and signal quality [int] of the device. Based
+        on the if/else example outlined in Lifx documentation - https://lan.developer.lifx.com/docs/information-messages#statewifiinfo---packet-17
+    .EXAMPLE
+        Get-LifxDevice | Get-LifxDeviceWifi
+#>
+
 function Get-LifxDeviceWifi
 {
     param(
