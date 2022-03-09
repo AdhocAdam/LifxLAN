@@ -1,3 +1,12 @@
+<#
+    .SYNOPSIS
+        Get detailed device information
+    .DESCRIPTION
+        Accepts Get-LifxDevice to obtain the device's product details (model, version, features/capabilities) and firmware version.
+    .EXAMPLE
+        Get-LifxDevice | Get-LifxDeviceSetting
+#>
+
 function Get-LifxDeviceSetting
 {
     param(
