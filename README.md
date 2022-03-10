@@ -18,6 +18,7 @@ This is a module aimed at controlling Lifx devices on your LAN right from PowerS
 | Initialize-LifxDevice | Obtains the device Name and Group of a device    |
 | Get-LifxDevicePower   | Obtains the current power state of a device |
 | Get-LifxDeviceSetting | Obtains the details of a device such as it's Lifx Identifier, Product Name, and capabilities such as Infrared, Multizone, and HEV support |
+| Get-LifxDeviceColor   | Obtains the HSBK values of a device  |
 | Get-LifxDeviceWifi    | Obtains the current wifi signal and strength of a device |
 | Get-LifxProduct       | Returns a specific Lifx Product's capabilities |
 | Set-LifxDevicePower   | Turns a device on or off |
@@ -94,29 +95,36 @@ $devices = Get-LifxDevice | Initialize-LifxDevice
 Set-LifxDevicePower -Device $devices[0] -Power $false
 ```
 
-## Changing Color
+## Working with Color
 
 Just like the app, the HSBK (Hue, Saturation, Brightness, Kelvin) can all be controlled independently.
 
+- Hue is provided in degrees between 0-360
 - Brightness/Saturdation are provided in terms of 0-100 percent, defaults to 0 if not provided.
 - RGB 0-255, defaults to 0 if not provided.
 - Kelvin 1000-12000
 
-### RGB
+### Get-LifxDeviceColor
+```powershell
+$devices = Get-LifxDevice | Initialize-LifxDevice
+$devices | Get-LifxDeviceColor
+```
+
+### Set-LifxDeviceColor via RGB
 
 ```powershell
 $devices = Get-LifxDevice | Initialize-LifxDevice
 $devices | Where-Object {$_.Group -eq "Living Room"} | Set-LifxDeviceColor -Red 200 -Blue 13 -Brightness 75 -Saturation 100
 ```
 
-### Predefined white palette as seen in the app (supports tab complete)
+### Set-LifxDeviceColor via predefined white palette as seen in the app (supports tab complete)
 
 ```powershell
 $devices = Get-LifxDevice | Initialize-LifxDevice
 $devices | Where-Object {$_.Group -eq "Living Room"} | Set-LifxDeviceColor -Brightness 100 -White 'Sunset' -SecondsToTransition 1.5
 ```
 
-### White palette as defined in Kelvin range
+### Set-LifxDeviceColor via white palette as defined in Kelvin range
 
 ```powershell
 $devices = Get-LifxDevice | Initialize-LifxDevice
