@@ -31,7 +31,7 @@ function Get-LifxDevicePower
         $localIP = [System.Net.IPAddress]::Parse([System.Net.IPAddress]::Any)
         $RemoteIpEndPoint = New-Object System.Net.IPEndpoint($localIP, $Port)
         $receivingUdpClient = $null
-        $receivingUdpClient = New-Object System.Net.Sockets.UDPClient($RemoteIpEndPoint)
+        $receivingUdpClient = New-Object System.Net.Sockets.UDPClient
         $receivingUdpClient.Client.Blocking = $false
         $receivingUdpClient.DontFragment = $true
         $receivingUdpClient.Client.SetSocketOption([System.Net.Sockets.SocketOptionLevel]::Socket, [System.Net.Sockets.SocketOptionName]::ReuseAddress, $true)
