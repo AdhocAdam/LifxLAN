@@ -35,15 +35,15 @@ function Set-LifxDeviceColor
         [ValidateRange(0, 255)]
         [Parameter(ParameterSetName="Color")]
         [decimal]$Red = 0,
-        
+
         [ValidateRange(0, 255)]
         [Parameter(ParameterSetName="Color")]
         [decimal]$Green = 0,
-        
+
         [ValidateRange(0, 255)]
         [Parameter(ParameterSetName="Color")]
         [decimal]$Blue = 0,
-        
+
         #Brightness: How bright the light is. Zero brightness is the same as the device is off, while full brightness be just that.
         #This value is taken as a percent value i.e. 1, 27, 43, 100
         [ValidateRange(0, 100)]
@@ -62,13 +62,13 @@ function Set-LifxDeviceColor
         [Parameter(ParameterSetName="KelvinByNumber")]
         [Parameter(ParameterSetName="KelvinByName")]
         [decimal]$SecondsToTransition = 0,
-        
+
         #Kelvin: Allowed range aka the "temperature" when the device has zero saturation. A higher value is a
         #cooler white (more blue) whereas a lower value is a warmer white (more yellow)
         [ValidateRange(1000, 12000)]
         [Parameter(ParameterSetName="KelvinByNumber")]
         [decimal]$Kelvin,
-        
+
         #kelvin values by name as defined by Lifx
         [Parameter(ParameterSetName="KelvinByName")]
         [ValidateSet("Candlelight", "Sunset", "Ultra Warm", "Incandescent", "Warm", "Neutral", "Cool", "Cool Daylight", "Soft Daylight",
@@ -104,9 +104,11 @@ function Set-LifxDeviceColor
     #https://lan.developer.lifx.com/docs/representing-color-with-hsbk
     $Brightness = $Brightness/100
     $Saturation = $Saturation/100
-    $hscolor = [System.Drawing.Color]::FromArgb($red, $green, $blue)
+    #$hscolor = [System.Drawing.Color]::FromArgb($red, $green, $blue)
+    $hscolor = ConvertTo-HSBK -Red $red -Green $green -Blue $blue
     $hsbrightness = [int]([Math]::Round(0xFFFF * $Brightness))
-    $hshue = [int](([Math]::Round(0x10000 * $hscolor.GetHue()) / 360) % 0x10000)
+    #$hshue = [int](([Math]::Round(0x10000 * $hscolor.GetHue()) / 360) % 0x10000)
+    $hshue = [int](([Math]::Round(0x10000 * $hscolor.Hue) / 360) % 0x10000)
     $hsSaturation = [int]([Math]::Round(0xFFFF * $Saturation))
 
     #build the packet
@@ -168,8 +170,8 @@ function Set-LifxDeviceColor
 
         #send the SetColor packet to the device
         $send = $receivingUdpClient.SendAsync($changeColorPacket, $changeColorPacket.Length, $_.IPAddress.Address, $_.IPAddress.Port)
-    
-        #shut the udp client down    
+
+        #shut the udp client down
         $receivingUdpClient.Dispose()
         $receivingUdpClient.Close()
 
