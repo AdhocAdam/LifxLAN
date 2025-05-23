@@ -10,3 +10,9 @@ administration of Lifx devices.
 Get-ChildItem -Path "$PSScriptRoot\Private" -Filter *.ps1 | ForEach-Object {
     . $_.FullName
 }
+
+# Load Public Functions
+Get-ChildItem -Path "$PSScriptRoot\Public" -Recurse -Filter *.ps1 | ForEach-Object {
+    . $_.FullName
+    Export-ModuleMember -Function ($_.BaseName)
+}
