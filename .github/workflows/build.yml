@@ -60,6 +60,7 @@ jobs:
           New-Item -Path "C:\Users\runneradmin\Documents\PowerShell\Modules\LifxLAN" -ItemType Directory
           Copy-Item LifxLAN.psd1 -Destination "C:\Users\runneradmin\Documents\PowerShell\Modules\LifxLAN"
           Copy-Item LifxLAN.psm1 -Destination "C:\Users\runneradmin\Documents\PowerShell\Modules\LifxLAN"
+          Copy-Item -Path "Private" -Destination "C:\Users\runneradmin\Documents\PowerShell\Modules\LifxLAN" -recurse
           Copy-Item -Path "Device" -Destination "C:\Users\runneradmin\Documents\PowerShell\Modules\LifxLAN" -recurse
           Copy-Item -Path "Packet" -Destination "C:\Users\runneradmin\Documents\PowerShell\Modules\LifxLAN" -recurse
           Copy-Item -Path "Product" -Destination "C:\Users\runneradmin\Documents\PowerShell\Modules\LifxLAN" -recurse
