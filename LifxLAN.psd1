@@ -66,19 +66,7 @@ PowerShellVersion = '5.1'
 # FormatsToProcess = @()
 
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
-NestedModules = @(
-        '.\Device\Get-LifxDevice.ps1',
-        '.\Device\Initialize-LifxDevice.ps1',
-        '.\Device\Get-LifxDevicePower.ps1',
-        '.\Device\Set-LifxDevicePower.ps1',
-        '.\Device\Get-LifxDeviceColor.ps1',
-        '.\Device\Set-LifxDeviceColor.ps1',
-        '.\Device\Get-LifxDeviceSetting.ps1',
-        '.\Device\Get-LifxDeviceWifi.ps1',
-        '.\Packet\Convert-LifxPacketToBuffer.ps1',
-        '.\Packet\New-LifxPacket.ps1',
-        '.\Product\Get-LifxProduct.ps1'
-        )
+# NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 #FunctionsToExport = @()
