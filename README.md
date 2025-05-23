@@ -49,7 +49,7 @@ $devices = Get-LifxDevice | Initialize-LifxDevice
 $devices | Get-LifxDeviceSetting
 ```
 
-This updates devices returned with properties for [PSCustomObject] Product details and [Version] Firmware Version. For example:
+This updates devices returned with properties for [PSCustomObject] Product details and [Version] Firmware Version from products defined within the module itself. In the event product details are not available in the module, they are retrieved from [LIFX's official GitHub repo (products.json)](https://github.com/LIFX/products). For example:
 
 ```powershell
 #Example Product information
