@@ -47,6 +47,9 @@ jobs:
               #prep the PrivateData section, then set the pre-release version
               Update-ModuleManifest -Path ".\LifxLAN.psd1"
               Update-ModuleManifest -Path ".\LifxLAN.psd1" -Prerelease "$alphaVersion"
+              (Get-Content -Path '.\LifxLAN.psd1') -replace 'FunctionsToExport = @()', '#FunctionsToExport = @()' | Set-Content -Path '.\LifxLAN.psd1'
+              (Get-Content -Path '.\LifxLAN.psd1') -replace 'CmdletsToExport = @()', '#CmdletsToExport = @()' | Set-Content -Path '.\LifxLAN.psd1'
+              (Get-Content -Path '.\LifxLAN.psd1') -replace 'AliasesToExport = @()', '#AliasesToExport = @()' | Set-Content -Path '.\LifxLAN.psd1'
           }
           Write-Output "Updated Manifest---"
           
