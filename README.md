@@ -49,7 +49,7 @@ $devices = Get-LifxDevice | Initialize-LifxDevice
 $devices | Get-LifxDeviceSetting
 ```
 
-This updates devices returned with properties for [PSCustomObject] Product details and [Version] Firmware Version from products defined within the module itself. In the event product details are not available in the module, they are retrieved from [LIFX's official GitHub repo (products.json)](https://github.com/LIFX/products). For example:
+This updates devices with Product details [PSCustomObject] and Firmware Versions [Version] from a product list as defined [within the module itself](https://github.com/AdhocAdam/LifxLAN/blob/a69c49a277df546dbd11b89aa609d35b96c55a0e/Public/Product/Get-LifxProduct.ps1#L33). In the event product details are not defined in the module, they are retrieved from [LIFX's official GitHub repo (products.json)](https://github.com/LIFX/products). For example:
 
 ```powershell
 #Example Product information
@@ -97,7 +97,7 @@ Set-LifxDevicePower -Device $devices[0] -Power $false
 
 ## Working with Color
 
-Just like the app, the HSBK (Hue, Saturation, Brightness, Kelvin) can all be controlled independently.
+Just like the app, the HSBK (Hue, Saturation, Brightness, Kelvin) can all be controlled independently. However to keep things simple, you can provide RGB values and the module will convert them to the required HSBK values.
 
 - Hue is provided in degrees between 0-360
 - Brightness/Saturdation are provided in terms of 0-100 percent, defaults to 0 if not provided.
