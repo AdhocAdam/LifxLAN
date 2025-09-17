@@ -26,10 +26,24 @@ This is a module aimed at controlling Lifx devices on your LAN right from PowerS
 
 ## Getting Started
 
-Install from the module from the PowerShell Gallery by using the following at a PowerShell prompt
+Install the module from the PowerShell Gallery by using the following at a PowerShell prompt
 
+#### Installing on PowerShell versions 6+ (black background, downloaded from [Microsoft's PowerShell Github](https://github.com/PowerShell/PowerShell))
 ```powershell
 Install-Module -Name LifxLAN -AllowPrerelease
+```
+
+#### Installing on Windows Powershell v5.1 (blue background/ships with Windows)
+If you're installing on an older version of PowerShell, you might get an error that states "_A parameter cannot be found that matches parameter name 'allowprerelease'_". This is due to changes made in the PowerShellGet module updated in versions 6 onward. You'll need to update PowerShellGet first (as seen below) per [Microsoft documentation](https://learn.microsoft.com/en-us/powershell/gallery/powershellget/install-powershellget?view=powershellget-3.x&viewFallbackFrom=powershell-7.2) and then you'll be able to install the module.
+
+```powershell
+Install-Module PowerShellGet -Force -AllowClobber
+Install-Module LifxLAN -AllowPrerelease
+```
+
+## Once installed, import the module for use in your current session
+```powershell
+Import-Module LifxLAN
 ```
 
 ## Discovering Lifx devices on your network
