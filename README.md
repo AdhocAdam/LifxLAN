@@ -146,7 +146,7 @@ $devices | Where-Object {$_.Group -eq "Living Room"} | Set-LifxDeviceColor -Kelv
 ```
 
 ## Working with Extended Multizone Color, Get-LifxDeviceColor
-LIFX Devices that support zones such as lightscripts, neon flex, string lights, etc. can be controlled as a single device or individual zones. Take the following example with a device named **Outdoor String**. First we discover all of the lifx devices on our network, initialize them (to get the name/groups), then get the device settings to ensure it has a property called "Product" that contains the ExtendedMultizone property of true
+LIFX Devices that support zones such as lightstrips, neon flex, string lights, etc. can be controlled as a single device or individual zones. Take the following example with a device named **Outdoor String**. First we discover all of the lifx devices on our network, initialize them (to get the name/groups), then get the device settings to ensure it has a property called "Product" that contains the ExtendedMultizone property of true
 
 ```powershell
 $devices = Get-LifxDevice | Initialize-LifxDevice
