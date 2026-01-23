@@ -6,13 +6,13 @@
     .EXAMPLE
         New-LifxPacket -Type "GetColor"
      .EXAMPLE
-        New-LifxPacket -Type "Discovery"   
+        New-LifxPacket -Type "Discovery"
 #>
 
 function New-LifxPacket
 {
     param (
-        [ValidateSet("Discovery", "GetColor", "GetLabel", "GetGroup", "GetVersion", "GetHostFirmware", "GetPower", "GetWifi")]
+        [ValidateSet("Discovery", "GetColor", "GetColorZones", "GetLabel", "GetGroup", "GetVersion", "GetHostFirmware", "GetPower", "GetWifi")]
         [string] $Type
     )
 
@@ -20,13 +20,14 @@ function New-LifxPacket
     {
         #https://lan.developer.lifx.com/docs/querying-the-device-for-data
         "Discovery" {$packetInt = 2; $size = 36; $ackRequired = $false}
-        "GetColor"  {$packetInt = 101; $size = 36; $ackRequired = $false}
+        "GetHostFirmware"{$packetInt = 14; $size = 36; $ackRequired = $false}
+        "GetWifi" {$packetInt = 16; $size = 36; $ackRequired = $false}
+        "GetPower" {$packetInt = 20; $size = 36; $ackRequired = $false}
         "GetLabel"  {$packetInt = 23; $size = 36; $ackRequired = $false}
         "GetGroup"  {$packetInt = 51; $size = 36; $ackRequired = $false}
         "GetVersion"{$packetInt = 32; $size = 36; $ackRequired = $false}
-        "GetHostFirmware"{$packetInt = 14; $size = 36; $ackRequired = $false}
-        "GetPower" {$packetInt = 20; $size = 36; $ackRequired = $false}
-        "GetWifi" {$packetInt = 16; $size = 36; $ackRequired = $false}
+        "GetColor"  {$packetInt = 101; $size = 36; $ackRequired = $false}
+        "GetColorZones" {$packetInt = 502; $size = 40; $ackRequired = $false}
     }
 
     $packet = [PSCustomObject] @{
@@ -42,5 +43,11 @@ function New-LifxPacket
         target_mac_address = New-Object byte[] 8
         timestamp          = [uint64]0
     }
+
+    if ($type -eq "GetColorZones") {
+        Add-Member -InputObject $packet -MemberType NoteProperty -Name "start_index" -Value 0
+        Add-Member -InputObject $packet -MemberType NoteProperty -Name "end_index" -Value 255
+    }
+
     return $packet
 }

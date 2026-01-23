@@ -18,11 +18,11 @@ This is a module aimed at controlling Lifx devices on your LAN right from PowerS
 | Initialize-LifxDevice | Obtains the device Name and Group of a device    |
 | Get-LifxDevicePower   | Obtains the current power state of a device |
 | Get-LifxDeviceSetting | Obtains the details of a device such as it's Lifx Identifier, Product Name, and capabilities such as Infrared, Multizone, and HEV support |
-| Get-LifxDeviceColor   | Obtains the HSBK values of a device  |
+| Get-LifxDeviceColor   | Obtains the HSBK value of a device or HSBK values of its Zones.  |
 | Get-LifxDeviceWifi    | Obtains the current wifi signal and strength of a device |
 | Get-LifxProduct       | Returns a specific Lifx Product's capabilities |
 | Set-LifxDevicePower   | Turns a device on or off |
-| Set-LifxDeviceColor   | Defines the color of a device in: RGB + Saturation + Brightness, Kelvin + Brightness, White Palette as seen in the app, and finally all support an the time to takes to change in seconds |
+| Set-LifxDeviceColor   | Defines the color of a device in: RGB + Saturation + Brightness, Kelvin + Brightness, White Palette as seen in the app, and finally all support an the time to takes to change in seconds. Can control individual devices and multizone devices |
 
 ## Getting Started
 
@@ -143,6 +143,74 @@ $devices | Where-Object {$_.Group -eq "Living Room"} | Set-LifxDeviceColor -Brig
 ```powershell
 $devices = Get-LifxDevice | Initialize-LifxDevice
 $devices | Where-Object {$_.Group -eq "Living Room"} | Set-LifxDeviceColor -Kelvin 7500 -Brightness 100
+```
+
+## Working with Extended Multizone Color, Get-LifxDeviceColor
+LIFX Devices that support zones such as lightscripts, neon flex, string lights, etc. can be controlled as a single device or individual zones. Take the following example with a device named **Outdoor String**. First we discover all of the lifx devices on our network, initialize them (to get the name/groups), then get the device settings to ensure it has a property called "Product" that contains the ExtendedMultizone property of true
+
+```powershell
+$devices = Get-LifxDevice | Initialize-LifxDevice
+$lightstring = $devices | ?{$_.Name -eq "Outdoor String"} | Get-LifxDeviceSetting
+$lightstring.Product.ExtendedMultizone
+
+true
+```
+
+We can now perform the following:
+
+```powershell
+$lightstring = $lightstring | Get-LifxDeviceColor
+```
+
+This will add introduce two properties to the device:
+
+- Zones: Represents the total count of zones that can be controlled on the device
+- Multizone: Array of Indexes/Colors that define what colors are located at each index/zone. It will look like the following
+
+```powershell
+Index Colors
+----- ------
+    0 {@{Color=0; Hue=0; Saturation=0; Brightness=100; Kelvin=3500}, @{Color=1; Hue=0; Saturation=0; Brightness=100; Kelvin=3500}, @{Color=2; Hue=0; Saturation=0; …
+    8 {@{Color=0; Hue=0; Saturation=0; Brightness=100; Kelvin=3500}, @{Color=1; Hue=0; Saturation=0; Brightness=100; Kelvin=3500}, @{Color=2; Hue=0; Saturation=0; …
+   16 {@{Color=0; Hue=0; Saturation=0; Brightness=100; Kelvin=3500}, @{Color=1; Hue=0; Saturation=0; Brightness=100; Kelvin=3500}, @{Color=2; Hue=0; Saturation=0; …
+   24 {@{Color=0; Hue=0; Saturation=0; Brightness=100; Kelvin=3500}, @{Color=1; Hue=0; Saturation=0; Brightness=100; Kelvin=3500}, @{Color=2; Hue=0; Saturation=0; …
+   32 {@{Color=0; Hue=0; Saturation=0; Brightness=100; Kelvin=3500}, @{Color=1; Hue=0; Saturation=0; Brightness=100; Kelvin=3500}, @{Color=2; Hue=0; Saturation=0; …
+```
+
+- Indexes occur in multiples of 8
+- Each Index features Colors 0-7 that define an HSBK value
+- The last index may _not_ be a full 8 colors, for example a Lifx Outdoor string has 36 Zones. The last zone only has the first 4 HSBK colors defined
+
+## Working with Extended Multizone Color, Set-LifxDeviceColor
+
+Controlling the color of an extended multizone device can be done one of two ways. Take the following example where $zoneColor1 and $zoneColor2 are used differently.
+- $zoneColor1, RGB values are provided as values between 0-255, Saturation/Brightness are defined as value between 0-100
+- $zoneColor2, the Hue value (0-360) is provided directly just like the app. Saturation/Brightness are defined as value between 0-100
+- $zoneColor3 isn't used in this example, but is being provided as an example of how to control the Kelvin of a device. 
+
+```powershell
+$zoneColor1 = [PSCustomObject]@{
+    "Red"        = 216
+    "Green"      = 45
+    "Blue"       = 231
+    "Saturation" = 80
+    "Brightness" = 70
+}
+$zoneColor2 = [PSCustomObject]@{
+    "Hue"        = 105
+    "Saturation" = 85
+    "Brightness" = 90
+}
+$zoneColor3 = [PSCustomObject]@{
+    "Kelvin"     = 7200
+    "Brightness" = 65
+}
+
+#multi-zone device, set all of zones to the same value and transition in 2 seconds
+$lightstring | Set-LifxDeviceColor -Zone $zoneColor1 -SecondsToTransition 2
+
+#multi-zone device, set different colors for each zone starting at Zone 4
+$lightstring | Set-LifxDeviceColor -zones $zoneColor1, $zoneColor2 -StartingZone 4
 ```
 
 ## Credits
