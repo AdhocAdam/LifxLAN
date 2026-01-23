@@ -20,10 +20,10 @@ function Get-LifxProduct {
 
     #online product registry
     $RestError = $null
-    Try {
+    try {
         $productRegistry = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/LIFX/products/refs/heads/master/products.json"
     }
-    Catch {
+    catch {
         $RestError = $_
     }
 
@@ -92,17 +92,38 @@ function Get-LifxProduct {
             112 { $product = [PSCustomObject]@{Id = $_; Name = "LIFX BR30 Night Vision Intl"; Color = $true; Infrared = $true; Multizone = $false; HEV = $false } }
             113 { $product = [PSCustomObject]@{Id = $_; Name = "LIFX Mini WW US"; Color = $true; Infrared = $false; Multizone = $false; HEV = $false } }
             114 { $product = [PSCustomObject]@{Id = $_; Name = "LIFX Mini WW Intl"; Color = $true; Infrared = $false; Multizone = $false; HEV = $false } }
+            #115, switch
+            #116, switch
+            117 { $product = [PSCustomObject]@{Id = $_; Name = "LIFX Z US"; Color = $true; Infrared = $false; Multizone = $true; ExtendedMultizone = $true; HEV = $false } }
+            118 { $product = [PSCustomObject]@{Id = $_; Name = "LIFX Z Intl"; Color = $true; Infrared = $false; Multizone = $false; ExtendedMultizone = $true; HEV = $false } }
+            119 { $product = [PSCustomObject]@{Id = $_; Name = "LIFX Beam US"; Color = $true; Infrared = $false; Multizone = $true; ExtendedMultizone = $true; HEV = $false } }
+            120 { $product = [PSCustomObject]@{Id = $_; Name = "LIFX Beam Intl"; Color = $true; Infrared = $false; Multizone = $true; ExtendedMultizone = $true; HEV = $false } }
+            141 { $product = [PSCustomObject]@{Id = $_; Name = "LIFX Neon US"; Color = $true; Infrared = $false; Multizone = $true; ExtendedMultizone = $true; HEV = $false } }
+            142 { $product = [PSCustomObject]@{Id = $_; Name = "LIFX Neon Intl"; Color = $true; Infrared = $false; Multizone = $true; ExtendedMultizone = $true; HEV = $false } }
+            143 { $product = [PSCustomObject]@{Id = $_; Name = "LIFX String US"; Color = $true; Infrared = $false; Multizone = $true; ExtendedMultizone = $true; HEV = $false } }
+            144 { $product = [PSCustomObject]@{Id = $_; Name = "LIFX String Intl"; Color = $true; Infrared = $false; Multizone = $true; ExtendedMultizone = $true; HEV = $false } }
+            161 { $product = [PSCustomObject]@{Id = $_; Name = "LIFX Outdoor Neon US"; Color = $true; Infrared = $false; Multizone = $true; ExtendedMultizone = $true; HEV = $false } }
+            162 { $product = [PSCustomObject]@{Id = $_; Name = "LIFX Outdoor Neon Intl"; Color = $true; Infrared = $false; Multizone = $true; ExtendedMultizone = $true; HEV = $false } }
+            203 { $product = [PSCustomObject]@{Id = $_; Name = "LIFX String US"; Color = $true; Infrared = $false; Multizone = $true; ExtendedMultizone = $true; HEV = $false } }
+            204 { $product = [PSCustomObject]@{Id = $_; Name = "LIFX String Intl"; Color = $true; Infrared = $false; Multizone = $true; ExtendedMultizone = $true; HEV = $false } }
+            205 { $product = [PSCustomObject]@{Id = $_; Name = "LIFX Indoor Neon US"; Color = $true; Infrared = $false; Multizone = $true; ExtendedMultizone = $true; HEV = $false } }
+            206 { $product = [PSCustomObject]@{Id = $_; Name = "LIFX Indoor Neon Intl"; Color = $true; Infrared = $false; Multizone = $true; ExtendedMultizone = $true; HEV = $false } }
+            213 { $product = [PSCustomObject]@{Id = $_; Name = "LIFX Permanent Outdoor US"; Color = $true; Infrared = $false; Multizone = $true; ExtendedMultizone = $true; HEV = $false } }
+            214 { $product = [PSCustomObject]@{Id = $_; Name = "LIFX Permanent Outdoor Intl"; Color = $true; Infrared = $false; Multizone = $true; ExtendedMultizone = $true; HEV = $false } }
+
             default {
                 if ($productRegistry) {
                     if ($_ -in $productRegistry.products.pid) {
                         $onlineProduct = $productRegistry.products | Where-Object { $ProductId -eq $_.pid }
                         $product = [PSCustomObject]@{
-                            Id        = $_;
-                            Name      = $onlineProduct.name;
-                            Color     = $onlineProduct.features.color;
-                            Infrared  = $onlineProduct.features.infrared;
-                            Multizone = $onlineProduct.features.multizone;
-                            HEV       = $onlineProduct.features.hev
+                            Id                = $_;
+                            Name              = $onlineProduct.name;
+                            Color             = $onlineProduct.features.color;
+                            Infrared          = $onlineProduct.features.infrared;
+                            Multizone         = $onlineProduct.features.multizone;
+                            ExtendedMultizone = $onlineProduct.features.extended_multizone;
+                            HEV               = $onlineProduct.features.hev
+                            #TemperatureRange  = $onlineProduct.features.temperature_range
                         }
                     }
                     else {
