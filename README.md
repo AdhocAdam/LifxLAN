@@ -159,7 +159,7 @@ true
 We can now perform the following:
 
 ```powershell
-$lightstring = $lightstring | Get-LifxDeviceColor
+$lightstring | Get-LifxDeviceColor
 ```
 
 This will add introduce two properties to the device:
